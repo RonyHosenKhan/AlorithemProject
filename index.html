@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Gateway</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-600 p-4 text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="dl.jpg" alt="Logo" class="mr-2 h-16 w-16 rounded-full">
+        <h1 class="text-2xl font-bold">Donation Gateway</h1>
+      </div>
+      <ul class="flex space-x-6">
+        <li><a href="#" class="hover:underline">Home</a></li>
+        <li><a href="blog.html" class="hover:underline">Blog</a></li>
+        <li><a href="#" class="hover:underline">Contact</a></li>
+      </ul>
+      <div>
+        <span class="text-lg">Your Balance: $<span id="user-balance">1000</span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner Section -->
+  <section class="bg-cover bg-center h-64 flex items-center justify-center" style="background-image: url('db3.webp');">
+    <div class="bg-black bg-opacity-50 p-6 rounded">
+      <h2 class="text-4xl text-white font-bold">Make a Difference Today</h2>
+      <p class="text-white mt-2">Your donation helps change lives and support meaningful causes.</p>
+    </div>
+  </section>
+
+  <!-- Donation Cards -->
+  <section class="container mx-auto py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Sunna Foundation Card -->
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h3 class="text-2xl font-bold mb-4">Sunna Foundation</h3>
+        <p class="mb-4">Support education and health initiatives.</p>
+        <p class="mb-4">Raised: $<span id="sunna-fund">400</span></p>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="openDonationModal('Sunna Foundation')">
+          Donate Now
+        </button>
+      </div>
+
+      <!-- Helping Hands Card -->
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h3 class="text-2xl font-bold mb-4">Helping Hands</h3>
+        <p class="mb-4">Provide relief to communities in need.</p>
+        <p class="mb-4">Raised: $<span id="helping-fund">600</span></p>
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="openDonationModal('Helping Hands')">
+          Donate Now
+        </button>
+      </div>
+
+      <!-- Green Earth Initiative Card -->
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+        <h3 class="text-2xl font-bold mb-4">Green Earth Initiative</h3>
+        <p class="mb-4">Contribute to environmental protection efforts.</p>
+        <p class="mb-4">Raised: $<span id="green-fund">200</span></p>
+        <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="openDonationModal('Green Earth Initiative')">
+          Donate Now
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Photo Gallery</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img src="d1.jpg" alt="Gallery Image 1" class="w-full h-80 object-cover">
+        <div class="p-4">
+          <p class="text-lg font-semibold">Community Aid Event</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img src="d2.jpg" alt="Gallery Image 2" class="w-full h-80 object-cover">
+        <div class="p-4">
+          <p class="text-lg font-semibold">Educational Support</p>
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <img src="d3.jpg" alt="Gallery Image 3" class="w-full h-80 object-cover">
+        <div class="p-4">
+          <p class="text-lg font-semibold">Environmental Campaign</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donation History Section -->
+  <section class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Donation History</h2>
+    <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left">Cause</th>
+          <th class="px-4 py-2 text-left">Amount Donated</th>
+          <th class="px-4 py-2 text-left">Date & Time</th>
+        </tr>
+      </thead>
+      <tbody id="donation-history"></tbody>
+    </table>
+  </section>
+  
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p>&copy; 2024 Donation Gateway. All rights reserved.</p>
+      <div class="mt-4">
+        <a href="#" class="text-blue-400 hover:underline mx-2">Privacy Policy</a>
+        <a href="#" class="text-blue-400 hover:underline mx-2">Terms of Service</a>
+        <a href="#" class="text-blue-400 hover:underline mx-2">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Donation Modal -->
+  <div id="donation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+      <h2 class="text-2xl font-bold mb-4" id="modal-title">Donate</h2>
+      <input type="number" id="donation-amount" class="w-full p-2 mb-4 border rounded" placeholder="Enter donation amount">
+      <div class="flex justify-end">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeModal()">Cancel</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="submitDonation()">Donate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spinner -->
+  <div id="spinner" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
+    <div class="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-10 right-10 bg-green-500 text-white p-4 rounded shadow-lg opacity-0 transform transition-all duration-500">
+    Donation Successful!
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

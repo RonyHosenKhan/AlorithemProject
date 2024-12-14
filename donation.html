@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Gateway - Donate</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-600 p-4 text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="https://via.placeholder.com/40" alt="Logo" class="mr-2">
+        <h1 class="text-2xl font-bold">Donation Gateway</h1>
+      </div>
+      <ul class="flex space-x-6">
+        <li><a href="index.html" class="hover:underline">Home</a></li>
+        <li><a href="blog.html" class="hover:underline">Blog</a></li>
+        <li><a href="contact.html" class="hover:underline">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Donation Section -->
+  <section class="container mx-auto py-12">
+    <h2 class="text-3xl font-bold text-center mb-8">Make a Donation</h2>
+
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
+      <h3 class="text-2xl font-bold mb-4">Sunna Foundation</h3>
+      <p class="mb-4">Support education and health initiatives.</p>
+      <p class="mb-4">Raised: $<span id="sunna-fund">400</span></p>
+
+      <input type="number" id="donation-amount" class="w-full p-2 mb-4 border rounded" placeholder="Enter donation amount">
+      <div class="flex justify-end">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="window.history.back()">Cancel</button>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="submitDonation()">Donate</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function submitDonation() {
+      const donationAmount = parseFloat(document.getElementById('donation-amount').value);
+      if (isNaN(donationAmount) || donationAmount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+      }
+
+      // Update foundation fund
+      document.getElementById('sunna-fund').innerText = (parseFloat(document.getElementById('sunna-fund').innerText) + donationAmount).toFixed(2);
+
+      // Redirect back to home page after donation
+      alert('Donation successful!');
+      window.location.href = "index.html";  // Redirect to home page
+    }
+  </script>
+
+</body>
+</html>
