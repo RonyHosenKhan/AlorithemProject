@@ -47,12 +47,12 @@ function submitDonation() {
   }, 2000);
 }
 
-// Update user balance
+
 function updateBalance() {
   document.getElementById('user-balance').innerText = userBalance.toFixed(2);
 }
 
-// Show toast notification
+
 function showToast() {
   const toast = document.getElementById('toast');
   toast.classList.remove('opacity-0');
@@ -63,7 +63,7 @@ function showToast() {
   }, 3000);
 }
 
-// Update donation history table
+
 function updateDonationHistory() {
   const historyTable = document.getElementById('donation-history');
   historyTable.innerHTML = '';
@@ -76,4 +76,48 @@ function updateDonationHistory() {
     `;
     historyTable.appendChild(row);
   });
+}
+
+const causes = [
+  { name: 'Sunna Foundation', reliability: 90, raised: 400, goal: 1000 },
+  { name: 'Helping Hands', reliability: 80, raised: 600, goal: 1000 },
+  { name: 'Green Earth Initiative', reliability: 70, raised: 200, goal: 1000 },
+];
+
+
+function getBestCauseToDonate(amount) {
+  let n = causes.length;
+  let dp = Array.from({ length: n + 1 }, () => Array(amount + 1).fill(0));
+
+  for (let i = 1; i <= n; i++) {
+    let { reliability } = causes[i - 1];
+    for (let j = 0; j <= amount; j++) {
+      if (j >= reliability) {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - reliability] + reliability);
+      } else {
+        dp[i][j] = dp[i - 1][j];
+      }
+    }
+  }
+
+  
+  let j = amount;
+  for (let i = n; i > 0 && j > 0; i--) {
+    if (dp[i][j] !== dp[i - 1][j]) {
+      return causes[i - 1].name;
+    }
+  }
+  return causes[0].name; 
+}
+
+nt
+function recommendBestCause() {
+  let amount = parseInt(document.getElementById('donation-amount').value, 10);
+  if (isNaN(amount) || amount <= 0) {
+    alert('Please enter a valid donation amount.');
+    return;
+  }
+
+  let bestCause = getBestCauseToDonate(amount);
+  alert(`The best cause to donate to is: ${bestCause}`);
 }

@@ -13,13 +13,14 @@
   <nav class="bg-blue-600 p-4 text-white shadow-md">
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center">
-        <img src="dl.jpg" alt="Logo" class="mr-2 h-16 w-16 rounded-full">
+        <img src="dl.jpg" alt="Donation Gateway Logo" class="mr-2 h-16 w-16 rounded-full">
         <h1 class="text-2xl font-bold">Donation Gateway</h1>
       </div>
       <ul class="flex space-x-6">
         <li><a href="#" class="hover:underline">Home</a></li>
         <li><a href="blog.html" class="hover:underline">Blog</a></li>
         <li><a href="#" class="hover:underline">Contact</a></li>
+        <li><a href="donation.html" class="hover:underline">Donation Summary</a></li>
       </ul>
       <div>
         <span class="text-lg">Your Balance: $<span id="user-balance">1000</span></span>
@@ -35,9 +36,16 @@
     </div>
   </section>
 
+  <div class="flex justify-end mt-4">
+    <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="recommendBestCause()" title="Recommend the best cause based on your donation amount">
+      Recommend Best Cause
+    </button>
+  </div>
+
   <!-- Donation Cards -->
   <section class="container mx-auto py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
       <!-- Sunna Foundation Card -->
       <div class="bg-white p-6 rounded-lg shadow-lg text-center">
         <h3 class="text-2xl font-bold mb-4">Sunna Foundation</h3>
@@ -67,26 +75,28 @@
           Donate Now
         </button>
       </div>
+
     </div>
   </section>
 
+  <!-- Photo Gallery -->
   <section class="container mx-auto py-12">
     <h2 class="text-3xl font-bold text-center mb-8">Photo Gallery</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="d1.jpg" alt="Gallery Image 1" class="w-full h-80 object-cover">
+        <img src="d1.jpg" alt="Community Aid Event" class="w-full h-80 object-cover">
         <div class="p-4">
           <p class="text-lg font-semibold">Community Aid Event</p>
         </div>
       </div>
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="d2.jpg" alt="Gallery Image 2" class="w-full h-80 object-cover">
+        <img src="d2.jpg" alt="Educational Support" class="w-full h-80 object-cover">
         <div class="p-4">
           <p class="text-lg font-semibold">Educational Support</p>
         </div>
       </div>
       <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <img src="d3.jpg" alt="Gallery Image 3" class="w-full h-80 object-cover">
+        <img src="d3.jpg" alt="Environmental Campaign" class="w-full h-80 object-cover">
         <div class="p-4">
           <p class="text-lg font-semibold">Environmental Campaign</p>
         </div>
@@ -101,14 +111,13 @@
       <thead>
         <tr class="bg-gray-100">
           <th class="px-4 py-2 text-left">Cause</th>
-          <th class="px-4 py-2 text-left">Amount Donated</th>
+          <th class="px-4 py-2 text-right">Amount Donated</th>
           <th class="px-4 py-2 text-left">Date & Time</th>
         </tr>
       </thead>
       <tbody id="donation-history"></tbody>
     </table>
   </section>
-  
 
   <!-- Footer -->
   <footer class="bg-gray-800 text-white py-6">
@@ -123,7 +132,7 @@
   </footer>
 
   <!-- Donation Modal -->
-  <div id="donation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+  <div id="donation-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center" aria-hidden="true" aria-modal="true">
     <div class="bg-white p-8 rounded-lg shadow-lg w-96">
       <h2 class="text-2xl font-bold mb-4" id="modal-title">Donate</h2>
       <input type="number" id="donation-amount" class="w-full p-2 mb-4 border rounded" placeholder="Enter donation amount">

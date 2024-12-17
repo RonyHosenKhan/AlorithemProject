@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donation Gateway - Donate</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Smooth animations */
+    .progress-bar {
+      transition: width 1s ease-in-out;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 font-sans">
 
@@ -12,7 +18,7 @@
   <nav class="bg-blue-600 p-4 text-white shadow-md">
     <div class="container mx-auto flex justify-between items-center">
       <div class="flex items-center">
-        <img src="https://via.placeholder.com/40" alt="Logo" class="mr-2">
+        <img src="dl.jpg" alt="Donation Gateway Logo" class="mr-2 h-16 w-16 rounded-full">
         <h1 class="text-2xl font-bold">Donation Gateway</h1>
       </div>
       <ul class="flex space-x-6">
@@ -30,30 +36,123 @@
     <div class="bg-white p-8 rounded-lg shadow-lg max-w-md mx-auto">
       <h3 class="text-2xl font-bold mb-4">Sunna Foundation</h3>
       <p class="mb-4">Support education and health initiatives.</p>
-      <p class="mb-4">Raised: $<span id="sunna-fund">400</span></p>
+      <p class="mb-4">Raised: $<span id="sunna-fund">400</span> / $1000</p>
 
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-300 rounded-full h-4 mb-4">
+        <div id="progress-bar" class="bg-blue-500 h-4 rounded-full progress-bar" style="width: 40%;"></div>
+      </div>
+
+      <!-- Donation Amount Input -->
       <input type="number" id="donation-amount" class="w-full p-2 mb-4 border rounded" placeholder="Enter donation amount">
-      <div class="flex justify-end">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="window.history.back()">Cancel</button>
+
+      <!-- Suggested Amount -->
+      <p class="text-sm mb-4">
+        Suggested Donation: $<span id="suggested-amount">50</span>
+      </p>
+
+      <div class="flex justify-between">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="window.history.back()">Cancel</button>
         <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="submitDonation()">Donate</button>
       </div>
+
+      <!-- Button to View Donations in Ascending Order -->
+      <button class="bg-green-500 text-white px-4 py-2 rounded w-full mt-4" onclick="showSortedDonations()">View Donations in Ascending Order</button>
+
+      <!-- Display Sorted Donations -->
+      <div id="sorted-donations" class="mt-4 hidden">
+        <h4 class="text-lg font-semibold mb-2">Donations in Ascending Order:</h4>
+        <ul id="donation-list" class="list-disc list-inside text-gray-700"></ul>
+      </div>
+
+      <!-- Impact Message -->
+      <p id="impact-message" class="mt-4 text-green-500 font-semibold hidden"></p>
     </div>
   </section>
 
   <script>
+    // User's available balance (for validation)
+    let userBalance = 500;
+
+    // Donation data
+    let pastDonations = [20, 50, 30, 100];
+
+    // Donation recommendations based on past donations
+    function getSuggestedDonation() {
+      const average = pastDonations.reduce((sum, value) => sum + value, 0) / pastDonations.length;
+      return Math.ceil(average / 10) * 10; // Round to nearest 10
+    }
+    document.getElementById('suggested-amount').innerText = getSuggestedDonation();
+
     function submitDonation() {
       const donationAmount = parseFloat(document.getElementById('donation-amount').value);
+      const fundElement = document.getElementById('sunna-fund');
+      const progressBar = document.getElementById('progress-bar');
+      const impactMessage = document.getElementById('impact-message');
+
       if (isNaN(donationAmount) || donationAmount <= 0) {
-        alert('Please enter a valid amount.');
+        alert('Please enter a valid donation amount.');
         return;
       }
 
-      // Update foundation fund
-      document.getElementById('sunna-fund').innerText = (parseFloat(document.getElementById('sunna-fund').innerText) + donationAmount).toFixed(2);
+      if (donationAmount > userBalance) {
+        alert(`You don't have enough balance. Your current balance is $${userBalance}.`);
+        return;
+      }
 
-      // Redirect back to home page after donation
-      alert('Donation successful!');
-      window.location.href = "index.html";  // Redirect to home page
+      // Update donation amount
+      const currentFund = parseFloat(fundElement.innerText);
+      const newFund = currentFund + donationAmount;
+      fundElement.innerText = newFund.toFixed(2);
+
+      // Update progress bar
+      const goal = 1000;
+      const progressPercentage = Math.min((newFund / goal) * 100, 100);
+      progressBar.style.width = progressPercentage + '%';
+
+      // Update user balance
+      userBalance -= donationAmount;
+
+      // Add this donation to the past donations
+      pastDonations.push(donationAmount);
+
+      // Display impact message
+      if (donationAmount >= 100) {
+        impactMessage.innerText = 'Thank you for your generous donation! You are making a huge difference!';
+      } else {
+        impactMessage.innerText = 'Thank you for your donation! Every bit helps improve lives!';
+      }
+      impactMessage.classList.remove('hidden');
+    }
+
+    // Bubble Sort Algorithm to Sort Donations in Ascending Order
+    function bubbleSort(arr) {
+      let n = arr.length;
+      for (let i = 0; i < n - 1; i++) {
+        for (let j = 0; j < n - i - 1; j++) {
+          if (arr[j] > arr[j + 1]) {
+            // Swap elements
+            let temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+          }
+        }
+      }
+      return arr;
+    }
+
+    function showSortedDonations() {
+      const sortedDonations = bubbleSort([...pastDonations]); // Create a copy to avoid modifying the original array
+      const donationList = document.getElementById('donation-list');
+      donationList.innerHTML = '';
+
+      sortedDonations.forEach(amount => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `$${amount}`;
+        donationList.appendChild(listItem);
+      });
+
+      document.getElementById('sorted-donations').classList.remove('hidden');
     }
   </script>
 
